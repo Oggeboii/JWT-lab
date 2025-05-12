@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock bands</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .band-container {
+            margin-bottom: 20px;
+        }
+        .band {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .new-band-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="band-container">
+    <div class="band" th:text="${band}"></div>
+</div>
+<button class="new-band-button" onclick="window.location.reload();">Another Rock band</button>
+</body>
+</html>

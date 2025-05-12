@@ -11,20 +11,23 @@ import java.util.Random;
 public class PunService {
     public List<SwedishPun> punList;
 
-
-    public List<SwedishPun> createPuns() {
+    Random rand = new Random();
+    public void createPuns() {
         List<SwedishPun> list = new ArrayList<>();
-        list.add(new SwedishPun("Vad kallar man en skillsmässa i göteborg","Päronsplitt"));
-        list.add(new SwedishPun("Hur vet man att en dykare har drunknat", "Han dycker inte upp"));
-        list.add(new SwedishPun("Vilket djur flyger rakast","Antiloop"));
-        list.add(new SwedishPun("Vad kallar man en groda utan ben", "Hopplös"));
+        list.add(new SwedishPun("Vad kallar man en skillsmässa i göteborg?","Päronsplitt"));
+        list.add(new SwedishPun("Hur vet man att en dykare har drunknat?", "Han dycker inte upp"));
+        list.add(new SwedishPun("Vilket djur flyger rakast?","Antiloop"));
+        list.add(new SwedishPun("Vad kallar man en groda utan ben?", "Hopplös"));
+        list.add(new SwedishPun("Hur löser dyckare svårighter?","Dom går till botten med problemet"));
+        list.add(new SwedishPun("Varför fick björnen sova ute hela vintern?","Han hade tappat sitt ID-kort"));
 
         punList = list;
-        return punList;
     }
 
+
+
     public SwedishPun getPun() {
-        int random = new Random().nextInt(punList.size());
+        int random = rand.nextInt(punList.size());
         return punList.get(random);
     }
 
