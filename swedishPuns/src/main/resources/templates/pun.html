@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Svenska Ordvitsar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .pun-container {
+            margin-bottom: 20px;
+        }
+        .pun {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .punchline {
+            font-size: 20px;
+            color: gray;
+        }
+        .new-pun-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="pun-container">
+    <div class="pun">${pun}</div>
+    <div class="punchline">${punchLine}</div>
+</div>
+<button class="new-pun-button" onclick="window.location.reload();">Ny Ordvits</button>
+</body>
+</html>
