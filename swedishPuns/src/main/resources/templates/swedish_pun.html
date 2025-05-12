@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,8 +30,8 @@
 </head>
 <body>
 <div class="pun-container">
-    <div class="pun">${pun}</div>
-    <div class="punchline">${punchLine}</div>
+    <div class="pun" th:text="${pun}"></div>
+    <div class="punchline" th:text="${punchLine}"></div>
 </div>
 <button class="new-pun-button" onclick="window.location.reload();">Ny Ordvits</button>
 </body>

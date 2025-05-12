@@ -1,6 +1,6 @@
 package com.example.swedishpuns.controller;
 
-
+import com.example.swedishpuns.model.SwedishPun;
 import com.example.swedishpuns.service.PunService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,15 +17,16 @@ public class PunController {
         this.punService.createPuns(); // Fyller punList med ordvitsar
     }
 
-
     @GetMapping("/swedish_pun")
-    public String swedishPun(Model model) {
-        String pun = punService.getPun().joke();
-        String punchLine = punService.getPun().punchLine();
-        model.addAttribute("pun", pun);
-        model.addAttribute("punchLine", punchLine);
+    public String swedish_pun(Model model) {
+        SwedishPun pun = punService.getPun();
+        if (pun != null) {
+            model.addAttribute("pun", pun.joke());
+            model.addAttribute("punchLine", pun.punchLine());
+        } else {
+            model.addAttribute("pun", "Ingen ordvits hittades.");
+            model.addAttribute("punchLine", "");
+        }
         return "swedish_pun";
     }
-
-
 }
