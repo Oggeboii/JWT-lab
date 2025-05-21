@@ -1,0 +1,27 @@
+server:
+  port: 8888
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: auth-server
+          uri: http://localhost:9000
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=2
+
+        - id: rockbands
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/rockbands/**
+          filters:
+            - StripPrefix=2
+
+        - id: swedishpuns
+          uri: http://localhost:8090
+          predicates:
+            - Path=/api/swedishpuns/**
+          filters:
+            - - StripPrefix=2
