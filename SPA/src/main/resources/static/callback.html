@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OAuth2 Callback</title>
+</head>
+<body>
+<p>Logging you in...</p>
+<script type="module">
+    import './app.js'; // Eller den fil där handleCallback() finns
+    window.addEventListener('DOMContentLoaded', () => {
+        if (window.handleCallback) {
+            window.handleCallback();
+        } else {
+            console.error("handleCallback not defined");
+        }
+    });
+</script>
+</body>
+</html>

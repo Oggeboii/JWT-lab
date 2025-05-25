@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -33,6 +32,9 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
 import java.security.KeyPair;
@@ -77,13 +79,28 @@ public class AuthApplication {
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        config.addAllowedOrigin("http://localhost:5173"); // Your SPA's origin
+        config.setAllowCredentials(true);
+        source.registerCorsConfiguration("/**", config); // Apply to all paths on auth server
+        return source;
+    }
+
+
+    @Bean
     @Order(2)
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
         http.authorizeHttpRequests(authorize ->
                         authorize.anyRequest().authenticated())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .formLogin(Customizer.withDefaults());
         return http.build();
     }
+
 
     @Bean
     @Order(1)
@@ -107,7 +124,8 @@ public class AuthApplication {
                 // Redirect to /login for browser clients who are unauthenticated
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-                );
+                )
+                .formLogin(Customizer.withDefaults());
         return http.build();
     }
 
@@ -119,7 +137,7 @@ public class AuthApplication {
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .redirectUri("http://localhost:8080/api/auth/callback.html")
+                .redirectUri("http://localhost:5173/callback.html")
                 .scope("read_rockbands")
                 .clientSettings(ClientSettings.builder()
                         .requireAuthorizationConsent(false)
@@ -132,15 +150,28 @@ public class AuthApplication {
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .redirectUri("http://localhost:8080/api/auth/callback.html")
+                .redirectUri("http://localhost:5173/callback.html")
                 .scope("read_swedishpuns")
                 .clientSettings(ClientSettings.builder()
                         .requireAuthorizationConsent(false)
                         .build())
                 .build();
 
+        RegisteredClient spaClient = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("spa-client-id")
+                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE) // Ingen secret – PKCE!
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .redirectUri("http://localhost:5173/callback.html")
+                .scope("openid")
+                .scope("read_resource")
+                .clientSettings(ClientSettings.builder()
+                        .requireAuthorizationConsent(true) // Visa scopes till användaren vid login
+                        .requireProofKey(true)             // PKCE kräver detta!
+                        .build())
+                .build();
 
-        return new InMemoryRegisteredClientRepository(rockBandsClient, swedishPunsClient);
+
+        return new InMemoryRegisteredClientRepository(rockBandsClient, swedishPunsClient, spaClient);
     }
 
     @Bean
