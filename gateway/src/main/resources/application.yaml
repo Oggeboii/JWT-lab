@@ -14,14 +14,14 @@ spring:
         routes:
 
           - id: rockbands
-            uri: http://localhost:8080
+            uri: http://rockbandsservice:8080
             predicates:
               - Path=/api/rockbands/**
             filters:
               - RewritePath=/api/rockbands/?(?<segment>.*), /$\{segment}
 
           - id: swedishpuns
-            uri: http://localhost:8090
+            uri: http://swedishpunsservice:8090
             predicates:
               - Path=/api/swedishpuns/**
             filters:
@@ -31,4 +31,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9000
+          issuer-uri: http://auth:9000

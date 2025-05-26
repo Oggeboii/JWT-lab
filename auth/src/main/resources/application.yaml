@@ -1,0 +1,8 @@
+server:
+  port: 9000
+
+spring:
+  security:
+    oauth2:
+      authorization-server:
+        issuer: http://auth:9000
