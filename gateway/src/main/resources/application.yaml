@@ -14,14 +14,14 @@ spring:
         routes:
 
           - id: rockbands
-            uri: http://rockbandsservice:8080
+            uri: http://rockbands:8080
             predicates:
               - Path=/api/rockbands/**
             filters:
               - RewritePath=/api/rockbands/?(?<segment>.*), /$\{segment}
 
           - id: swedishpuns
-            uri: http://swedishpunsservice:8090
+            uri: http://swedishpuns:8090
             predicates:
               - Path=/api/swedishpuns/**
             filters:

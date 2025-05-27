@@ -28,7 +28,7 @@ public class RockBandsApplication {
                 .sessionManagement(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/rockbands").hasAuthority("SCOPE_read_resource")
+                        .requestMatchers("/rockbands/**").hasAuthority("SCOPE_read_resource")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));

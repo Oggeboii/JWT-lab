@@ -25,9 +25,7 @@ public class SwedishPunsApplication {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/swedishpuns").hasAuthority("SCOPE_read_resource") // Or just .authenticated()
-                        .requestMatchers("/public").permitAll()
-                        .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/swedishpuns/**").hasAuthority("SCOPE_read_resource")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));

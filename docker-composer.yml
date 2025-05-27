@@ -11,7 +11,7 @@ services:
     image: spa:0.0.1-SNAPSHOT
     ports:
       - "5173:5173"
-  rockbandsservice:
+  rockbands:
     image: rockbands:0.0.1-SNAPSHOT
-  swedishpunsservice:
+  swedishpuns:
     image: swedishpuns:0.0.1-SNAPSHOT
